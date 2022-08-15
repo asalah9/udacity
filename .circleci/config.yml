@@ -3,15 +3,34 @@ version: 2.1
 workflows:
   test-env-vars:
     jobs:
-      - build
+      - save_hello_world_output
+      - print_output_file:
+            requires:
+            - save_hello_world_output
 
 jobs:
-  build:
+  save_hello_world_output:
     docker:
       - image: cimg/base:2020.01
     steps:
       - checkout
       - run:
-          name: "echo an env var that is part of our project - yes"
+          name: "echo Saving to a file"
           command: |
-            echo $MY_ENV_VAR
+            echo "hello world" > ~/output.txt
+      - persist_to_workspace:
+          root: ~/     # relative path to our working directory
+          paths:      # file globs which will be persisted to the workspace
+           - output.txt
+
+  print_output_file:
+    docker:
+      - image: cimg/base:2020.01
+    steps:
+      # attach the files you persisted in the doing-things-job
+      - attach_workspace:
+          at: ~/ # relative path to our working directory
+      - run:
+          name : display cached file
+          command: |
+            cat ~/output.txt
