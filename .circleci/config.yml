@@ -1,7 +1,7 @@
 version: 2.1
 
 workflows:
-  test-env-vars:
+  test-sharing-files:
     jobs:
       - save_hello_world_output
       - print_output_file:
