@@ -38,7 +38,7 @@ jobs:
     steps:
       - run:
           name: "Say salah"
-          command: echo $name
+          command: echo $MY_ENV_VAR
 
 
 
