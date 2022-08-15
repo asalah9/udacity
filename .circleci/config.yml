@@ -26,7 +26,6 @@ jobs:
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
-      - checkout
       - run:
           name: "Say salah"
           command: "echo Ahmed Salah "
@@ -39,5 +38,6 @@ workflows:
   say-hello-workflow:
     jobs:
       - say-hello
-      - print_salah
-          requires: [say-hello]
+      - print_salah:
+          requires: 
+            - say-hello
