@@ -1,36 +1,45 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  test-sharing-files:
+  say-hello-workflow:
     jobs:
-      - save_hello_world_output
-      - print_output_file:
-            requires:
-            - save_hello_world_output
+      - say-hello
+      - print_salah:
+          requires: 
+            - say-hello
 
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  save_hello_world_output:
+  say-hello:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
-      - image: cimg/base:2020.01
+      - image: cimg/base:stable
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
       - run:
-          name: "echo Saving to a file"
-          command: |
-            echo "hello world" > ~/output.txt
-      - persist_to_workspace:
-          root: ~/     # relative path to our working directory
-          paths:      # file globs which will be persisted to the workspace
-           - output.txt
+          name: "Say hello"
+          command: echo salah
 
-  print_output_file:
+  print_salah:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
-      - image: cimg/base:2020.01
+      - image: circleci/node:13.8.0
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
-      # attach the files you persisted in the doing-things-job
-      - attach_workspace:
-          at: ~/ # relative path to our working directory
       - run:
-          name : display cached file
-          command: |
-            cat ~/output.txt
+          name: "Say salah"
+          command: echo $MY_ENV_VAR
+
+
+
+
