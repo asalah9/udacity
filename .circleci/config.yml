@@ -14,10 +14,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - run : return 1
-  HelloError:
-    docker:
-       - image: circleci/node:13.8.0
-    steps:
+
       - run :
           name: Error
           command: echo hello error
