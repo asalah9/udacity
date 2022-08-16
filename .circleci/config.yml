@@ -2,43 +2,23 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+commands:
+  print_pipeline_id:
+    description: "A very simple command for demonstration purposes"
+    steps:
+      - run : echo "The workflowID is $$CIRCLE_WORKFLOW_ID"
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  print-workflowID:
     jobs:
-      - say-hello
-      - print_salah:
-          requires: 
-            - say-hello
-
+      - workflowID
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+  workflowID:
     steps:
-      - checkout
-      - run:
-          name: "Say hello"
-          command: echo salah
-
-  print_salah:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: circleci/node:13.8.0
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    steps:
-      - run:
-          name: "Say salah"
-          command: echo $MY_ENV_VAR
+      - print_pipeline_id
 
 
 
